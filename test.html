@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pandit Knowledge Quiz</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        #language-selection {
+            margin: 20px auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+        #quiz-container { 
+            width: 80%; 
+            max-width: 800px;
+            margin: 20px auto; 
+            overflow-y: auto; 
+            max-height: 500px; 
+            border: 1px solid #ccc; 
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .question { 
+            margin-bottom: 20px;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        .options { 
+            list-style-type: none; 
+            padding: 0; 
+        }
+        .options li { 
+            text-align: left; 
+            margin: 10px 0;
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .options li:hover {
+            background-color: #e9e9e9;
+        }
+        .options input {
+            margin-right: 10px;
+        }
+        #next-button { 
+            margin-top: 20px; 
+            padding: 12px 25px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        #next-button:hover {
+            background-color: #45a049;
+        }
+        #next-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #result-message { 
+            margin-top: 20px; 
+            font-weight: bold; 
+            font-size: 18px; 
+            padding: 15px;
+            border-radius: 4px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .language-container {
+            margin-bottom: 20px;
+        }
+        select {
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pandit Knowledge Quiz</h1>
+    
+    <div class="language-container" id="language-selection">
+        <select id="language-selector">
+            <option value="">-- Select Language --</option>
+            <option value="english">English</option>
+            <option value="hindi">Hindi</option>
+            <option value="marathi">Marathi</option>
+        </select>
+        <button id="start-quiz" onclick="startQuiz()">Start Quiz</button>
+    </div>
+    
+    <div id="quiz-container" style="display: none;"></div>
+    <button id="next-button" onclick="nextBatch()" style="display: none;">Next</button>
+    <div id="result-message"></div>
+    
+    <script>
+        // Question banks for different languages
+        const questionBanks = {
+            english: [
+                ["What is the first step of Hindu worship?", ["Sankalp", "Aarti", "Distribution of Prasad", "Kirtan"], "Sankalp"],
+                ["What is the significance of 'Achaman' in worship?", ["Offering flowers", "Purification by drinking water", "Reciting mantras", "Distributing prasad"], "Purification by drinking water"],
+                ["Which Vedas are primarily associated with mantras and yajnas?", ["Rigveda", "Yajurveda", "Samaveda", "Atharvaveda"], "Yajurveda"],
+                ["In which direction should the priest sit while performing Havan?", ["East", "West", "North", "South"], "East"],
+                ["What are the main ingredients used for the worship of Lord Shiva?", ["Ghee", "Milk", "Water", "All of the above"], "All of the above"],
+                ["To which deity is the Gayatri mantra dedicated?", ["Lord Shiva", "Goddess Saraswati", "Sun God", "Lord Vishnu"], "Sun God"],
+                ["What is the purpose of Navagraha puja?", ["To remove planetary dosha", "To worship Lord Shiva", "To acquire wealth", "To pray for rain"], "To remove planetary dosha"],
+                ["On which day is the Satyanarayan puja performed?", ["Tuesday", "Thursday", "Full Moon", "New Moon"], "Full Moon"],
+                ["Which deity is worshipped on Ganesh Chaturthi?", ["Lord Vishnu", "Lord Shiva", "Lord Ganesha", "Lord Hanuman"], "Lord Ganesha"],
+                ["What is the most beloved offering to Lord Hanuman?", ["Ladoo", "Sugar", "Tulsi leaves", "Sindoor and chickpeas"], "Sindoor and chickpeas"],
+                ["What are the ingredients in 'Panchamrit'?", ["Milk, yogurt, ghee, honey, sugar", "Milk, water, tulsi, ghee, sugar", "Milk, sandalwood, rose water, yogurt, sugar", "Water, honey, sandalwood, tulsi, sugar"], "Milk, yogurt, ghee, honey, sugar"],
+                ["In which scripture is the Bhagavad Gita included?", ["Ramayana", "Mahabharata", "Upanishads", "Vedas"], "Mahabharata"],
+                ["In which festival is 'Kanya Pujan' performed?", ["Diwali", "Navratri", "Holi", "Makar Sankranti"], "Navratri"],
+                ["Which flower is considered the most auspicious to offer to Goddess Lakshmi?", ["Rose", "Jasmine", "Lotus", "Marigold"], "Lotus"],
+                ["Which is considered the holiest river in Hinduism?", ["Yamuna", "Ganga", "Godavari", "Kaveri"], "Ganga"],
+                ["In which direction should the temple in the house be located?", ["North", "South", "East", "West"], "East"],
+                ["Which sacred sound is associated with 'Om'?", ["Brahma", "Vishnu", "Shiva", "Universal Sound"], "Universal Sound"],
+                ["How many Kandas (sections) are there in the Ramayana?", ["Five", "Six", "Seven", "Eight"], "Seven"],
+                ["Which day is dedicated to Lord Vishnu?", ["Monday", "Thursday", "Saturday", "Sunday"], "Thursday"],
+                ["What does 'Rudraksha' mean?", ["Tears of Lord Shiva", "Ashes of Lord Mahadev", "Drops of nectar", "Flowers of liberation"], "Tears of Lord Shiva"],
+                ["Which mantra is recited during the Mahamrityunjaya Jap?", ["Om Namah Shivaya", "Gayatri mantra", "Mahamrityunjaya mantra", "Hanuman Chalisa"], "Mahamrityunjaya mantra"],
+                ["Which festival symbolizes the victory of good over evil?", ["Raksha Bandhan", "Diwali", "Pongal", "Onam"], "Diwali"]
+            ],
+            hindi: [
+                ["हिंदू पूजा का पहला कदम क्या है?", ["संकल्प", "आरती", "प्रसाद वितरण", "कीर्तन"], "संकल्प"],
+                ["पूजा में 'आचमन' करने का महत्व क्या है?", ["फूल अर्पित करना", "पानी पीकर शुद्धीकरण करना", "मंत्र पाठ करना", "प्रसाद वितरण करना"], "पानी पीकर शुद्धीकरण करना"],
+                ["मंत्र और यज्ञों के लिए कौन से वेद मुख्य रूप से संबंधित हैं?", ["ऋग्वेद", "यजुर्वेद", "सामवेद", "अथर्ववेद"], "यजुर्वेद"],
+                ["हवन करते समय पंडित को किस दिशा में बैठना चाहिए?", ["पूर्व", "पश्चिम", "उत्तर", "दक्षिण"], "पूर्व"],
+                ["भगवान शिव की पूजा के लिए कौन से मुख्य तत्वों का उपयोग किया जाता है?", ["घी", "दूध", "पानी", "सभी"], "सभी"],
+                ["गायत्री मंत्र किस देवता को समर्पित है?", ["भगवान शिव", "देवी सरस्वती", "सूर्य देव", "भगवान विष्णु"], "सूर्य देव"],
+                ["नवग्रह पूजा का उद्देश्य क्या है?", ["ग्रह दोष दूर करना", "भगवान शिव की पूजा करना", "धन प्राप्त करना", "बारिश के लिए प्रार्थना करना"], "ग्रह दोष दूर करना"],
+                ["सत्यनारायण पूजा किस दिन की जाती है?", ["मंगलवार", "गुरुवार", "पूर्णिमा", "अमावस्या"], "पूर्णिमा"],
+                ["गणेश चतुर्थी पर किस देवता की पूजा की जाती है?", ["भगवान विष्णु", "भगवान शिव", "भगवान गणेश", "भगवान हनुमान"], "भगवान गणेश"],
+                ["भगवान हनुमान को कौन सा नैवेद्य सबसे प्रिय है?", ["लड्डू", "चीनी", "तुलसी के पत्ते", "सिंदूर और चने"], "सिंदूर और चने"],
+                ["'पंचामृत' में कौन से पदार्थ होते हैं?", ["दूध, दही, घी, शहद, चीनी", "दूध, पानी, तुलसी, घी, चीनी", "दूध, चंदन, गुलाब जल, दही, चीनी", "पानी, शहद, चंदन, तुलसी, चीनी"], "दूध, दही, घी, शहद, चीनी"],
+                ["भगवद गीता किस ग्रंथ में समाहित है?", ["रामायण", "महाभारत", "उपनिषद", "वेद"], "महाभारत"],
+                ["किस त्योहार में 'कन्या पूजन' किया जाता है?", ["दीवाली", "नवरात्र", "होली", "मकर संक्रांति"], "नवरात्र"],
+                ["देवी लक्ष्मी को कौन सा फूल अर्पित करना सबसे शुभ माना जाता है?", ["गुलाब", "चमेली", "कमल", "गेंदा"], "कमल"],
+                ["हिंदू धर्म में सबसे पवित्र नदी कौन सी मानी जाती है?", ["यमुन", "गंगा", "गोदावरी", "कावेरी"], "गंगा"],
+                ["घर में मंदिर किस दिशा में होना चाहिए?", ["उत्तर", "दक्षिण", "पूर्व", "पश्चिम"], "पूर्व"],
+                ["'ॐ' शब्द किससे संबंधित है?", ["ब्रह्मा", "विष्णु", "शिव", "सार्वभौमिक ध्वनि"], "सार्वभौमिक ध्वनि"],
+                ["रामायण में कुल कितने कांड (अध्याय) हैं?", ["पाँच", "छह", "सात", "आठ"], "सात"],
+                ["भगवान विष्णु के लिए समर्पित दिन कौन सा है?", ["सोमवार", "गुरुवार", "शनिवार", "रविवार"], "गुरुवार"],
+                ["'रुद्राक्ष' का अर्थ क्या है?", ["भगवान शिव के आंसू", "महादेव की भस्म", "अमृत के बूँद", "मुक्ति के फूल"], "भगवान शिव के आंसू"],
+                ["मृत्युंजय जाप के दौरान कौन सा मंत्र उच्चारण किया जाता है?", ["ॐ नमः शिवाय", "गायत्री मंत्र", "मृत्युंजय मंत्र", "हनुमान चालीसा"], "मृत्युंजय मंत्र"],
+                ["कौन सा त्योहार अच्छाई की बुराई पर विजय को दर्शाता है?", ["रक्षाबंधन", "दीवाली", "पोंगल", "ओणम"], "दीवाली"]
+            ],
+            marathi: [
+                ["हिंदू पूजेचे पहिले पाऊल कोणते आहे?", ["संकल्प", "आरती", "प्रसाद वितरण", "कीर्तन"], "संकल्प"],
+                ["पूजेमध्ये 'आचमन' करण्याचे महत्त्व काय आहे?", ["फुले अर्पण करणे", "पाणी पिऊन शुद्धीकरण करणे", "मंत्र पठण करणे", "प्रसाद वाटप करणे"], "पाणी पिऊन शुद्धीकरण करणे"],
+                ["मंत्र आणि यज्ञांसाठी कोणते वेद मुख्यतः संबंधित आहेत?", ["ऋग्वेद", "यजुर्वेद", "सामवेद", "अथर्ववेद"], "यजुर्वेद"],
+                ["हवन करताना पंडित कोणत्या दिशेला तोंड करून बसावा?", ["पूर्व", "पश्चिम", "उत्तर", "दक्षिण"], "पूर्व"],
+                ["भगवान शंकराच्या अभिषेकासाठी कोणते मुख्य घटक वापरले जातात?", ["तूप", "दूध", "पाणी", "वरील सर्व"], "वरील सर्व"],
+                ["गायत्री मंत्र कोणत्या देवतेला समर्पित आहे?", ["भगवान शंकर", "देवी सरस्वती", "सूर्य देव", "भगवान विष्णू"], "सूर्य देव"],
+                ["नवग्रह पूजेचा उद्देश काय आहे?", ["ग्रहदोष दूर करणे", "भगवान शंकराची पूजा करणे", "संपत्ती मिळवणे", "पावसासाठी प्रार्थना करणे"], "ग्रहदोष दूर करणे"],
+                ["सत्यनारायण पूजा कोणत्या दिवशी केली जाते?", ["मंगळवार", "गुरुवार", "पूर्णिमा", "अमावस्या"], "पूर्णिमा"],
+                ["गणेश चतुर्थीच्या दिवशी कोणत्या देवतेची पूजा केली जाते?", ["भगवान विष्णू", "भगवान शंकर", "भगवान गणेश", "भगवान हनुमान"], "भगवान गणेश"],
+                ["भगवान हनुमानाला कोणते नैवेद्य सर्वात प्रिय आहे?", ["लाडू", "साखर", "तुळशी पाने", "सिंदूर आणि चणे"], "सिंदूर आणि चणे"],
+                ["'पंचामृत' मध्ये कोणते पदार्थ असतात?", ["दूध, दही, तूप, मध, साखर", "दूध, पाणी, तुळस, तूप, साखर", "दूध, चंदन, गुलाबपाणी, दही, साखर", "पाणी, मध, चंदन, तुळस, साखर"], "दूध, दही, तूप, मध, साखर"],
+                ["भगवद् गीता कोणत्या ग्रंथात समाविष्ट आहे?", ["रामायण", "महाभारत", "उपनिषद", "वेद"], "महाभारत"],
+                ["कुठल्या सणामध्ये 'कन्या पूजन' केले जाते?", ["दिवाळी", "नवरात्र", "होळी", "मकर संक्रांत"], "नवरात्र"],
+                ["देवी लक्ष्मीला कोणते फूल अर्पण करणे सर्वात शुभ मानले जाते?", ["गुलाब", "जाई", "कमळ", "झेंडू"], "कमळ"],
+                ["हिंदू धर्मात सर्वात पवित्र नदी कोणती मानली जाते?", ["यमुना", "गंगा", "गोदावरी", "कावेरी"], "गंगा"],
+                ["घरात मंदिर कोणत्या दिशेला असावे?", ["उत्तर", "दक्षिण", "पूर्व", "पश्चिम"], "पूर्व"],
+                ["'ॐ' हा पवित्र शब्द कोणाशी संबंधित आहे?", ["ब्रह्मा", "विष्णू", "शंकर", "सार्वत्रिक ध्वनी"], "सार्वत्रिक ध्वनी"],
+                ["रामायणामध्ये किती कांड (संच) आहेत?", ["पाच", "सहा", "सात", "आठ"], "सात"],
+                ["भगवान विष्णूला समर्पित दिवस कोणता आहे?", ["सोमवार", "गुरुवार", "शनिवार", "रविवार"], "गुरुवार"],
+                ["'रुद्राक्ष' याचा अर्थ काय आहे?", ["भगवान शंकराचे अश्रू", "महादेवाची भस्म", "अमृताचे थेंब", "कैवल्याचे फुले"], "भगवान शंकराचे अश्रू"],
+                ["मृत्युंजय जपाच्या वेळी कोणता मंत्र उच्चारला जातो?", ["ॐ नमः शिवाय", "गायत्री मंत्र", "महामृत्युंजय मंत्र", "हनुमान चालीसा"], "महामृत्युंजय मंत्र"],
+                ["चांगल्याचा वाईटावर विजय दर्शवणारा कोणता सण आहे?", ["रक्षाबंधन", "दिवाळी", "पोंगल", "ओणम"], "दिवाळी"]
+            ]
+        };
+
+        let currentIndex = 0;
+        let score = 0;
+        let testData = [];
+        const batchSize = 5;
+        const passingScore = 15;
+        const redirectDelay = 3000; // 3 seconds
+        
+        function startQuiz() {
+            const selectedLanguage = document.getElementById("language-selector").value;
+            if (!selectedLanguage) {
+                alert("Please select a language first");
+                return;
+            }
+            
+            testData = questionBanks[selectedLanguage];
+            document.getElementById("language-selection").style.display = "none";
+            document.getElementById("quiz-container").style.display = "block";
+            document.getElementById("next-button").style.display = "inline-block";
+            
+            loadQuestions();
+        }
+        
+        function loadQuestions() {
+            const container = document.getElementById("quiz-container");
+            container.innerHTML = ""; 
+            
+            for (let i = 0; i < batchSize; i++) {
+                if (currentIndex + i >= testData.length) break;
+                const [question, options, correct] = testData[currentIndex + i];
+                
+                const questionDiv = document.createElement("div");
+                questionDiv.classList.add("question");
+                questionDiv.innerHTML = `<h3>${currentIndex + i + 1}. ${question}</h3>`;
+                
+                const optionsList = document.createElement("ul");
+                optionsList.classList.add("options");
+                
+                options.forEach(option => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `
+                        <label>
+                            <input type="radio" name="q${currentIndex + i}" value="${option}">
+                            ${option}
+                        </label>
+                    `;
+                    optionsList.appendChild(li);
+                });
+                
+                questionDiv.appendChild(optionsList);
+                container.appendChild(questionDiv);
+            }
+            
+            // Disable next button if no answers selected
+            document.getElementById("next-button").disabled = true;
+            
+            // Enable/disable next button based on answer selection
+            const radioButtons = document.querySelectorAll("input[type=radio]");
+            radioButtons.forEach(radio => {
+                radio.addEventListener("change", function() {
+                    const answeredQuestions = document.querySelectorAll("input[type=radio]:checked").length;
+                    document.getElementById("next-button").disabled = answeredQuestions < Math.min(batchSize, testData.length - currentIndex);
+                });
+            });
+        }
+        
+        function nextBatch() {
+            // Calculate score for current batch
+            let selectedAnswers = document.querySelectorAll("input[type=radio]:checked");
+            selectedAnswers.forEach((answer, index) => {
+                if (answer.value === testData[currentIndex + index][2]) {
+                    score++;
+                }
+            });
+            
+            currentIndex += batchSize;
+            if (currentIndex < testData.length) {
+                loadQuestions();
+            } else {
+                showResults();
+            }
+        }
+        
+        function showResults() {
+            const container = document.getElementById("quiz-container");
+            const resultMessage = document.getElementById("result-message");
+            
+            container.innerHTML = `<h2>Your Score: ${score} / ${testData.length}</h2>`;
+            document.getElementById("next-button").style.display = "none";
+            
+            // Get the pandit's registration data from localStorage
+            const pandits = JSON.parse(localStorage.getItem("pandits")) || [];
+            const currentUserEmail = JSON.parse(localStorage.getItem("currentUser"))?.email;
+            const panditData = pandits.find(p => p.email === currentUserEmail);
+            
+            if (score >= passingScore) {
+                resultMessage.innerHTML = "Congratulations! You have passed the quiz.";
+                resultMessage.style.color = "green";
+                
+                // Update the pandit's status to verified and store in localStorage
+                if (panditData) {
+                    panditData.verified = true;
+                    panditData.testScore = score;
+                    localStorage.setItem("pandits", JSON.stringify(pandits));
+                    
+                    // Update currentUser in localStorage
+                    const currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
+                    currentUser.verified = true;
+                    currentUser.testScore = score;
+                    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+                }
+                
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, redirectDelay);
+            } else {
+                resultMessage.innerHTML = `You scored ${score}. You need at least ${passingScore} to pass. yor are not eligible as a pandit.`;
+                resultMessage.style.color = "red";
+                
+                setTimeout(() => {
+                    window.location.href = "result.html"; // Redirect back to test to try again
+                }, redirectDelay);
+            }
+        }
+    </script>
+</body>
+</html>

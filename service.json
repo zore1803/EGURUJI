@@ -1,0 +1,82 @@
+[
+    {
+        "id": 1,
+        "title": "Vaastu Shanti",
+        "category": "REGULAR",
+        "price": "₹00.00",
+        "image": "pic/20220418105201.png",
+        "description": "Griha Pravesh Pooja is a Hindu ritual performed when entering a new home for the first time. It purifies the space and invites blessings for happiness and prosperity. Conducted on an auspicious date, the ceremony involves cleaning the home, setting up a sacred space, performing a Homa (fire ritual), chanting mantras, and breaking a coconut to remove obstacles.Family and guests participate, promoting peace and harmony as a new chapter begins."
+    },
+    {
+        "id": 2,
+        "title": "Griha Pravesh",
+        "category": "REGULAR",
+        "price": "₹00.00",
+        "image": "pic/GRIHA.png",
+        "description": "Description for Griha Pravesh."
+    },
+    {
+        "id": 3,
+        "title": "Bhoomi Pooja",
+        "category": "REGULAR",
+        "price": "₹00.00",
+        "image": "pic/BHOOMI.jpg",
+        "description": "Description for Bhoomi Pooja."
+    },
+    {
+        "id": 4,
+        "title": "Satya Narayan",
+        "category": "REGULAR",
+        "price": "₹00.00",
+        "image": "pic/SATYA.jpg",
+        "description": "Description for Satya Narayan."
+    },
+    {
+        "id": 5,
+        "title": "Durja Pooja",
+        "category": "REGULAR",
+        "price": "₹00.00",
+        "image": "pic/DURGA.jpg",
+        "description": "Description for Durja Pooja."
+    },
+    {
+        "id": 6,
+        "title": "Office Opening Pooja",
+        "category": "REGULAR",
+        "price": "₹00.00",
+        "image": "pic/OFF OPEN.jpg",
+        "description": "Description for Office Opening Pooja."
+    },
+    {
+        "id": 7,
+        "title": "Mahalakshmi Pooja",
+        "category": "REGULAR",
+        "price": "₹00.00",
+        "image": "pic/MAHALAKSHI.jpg",
+        "description": "Description for Mahalakshmi Pooja."
+    },
+    {
+        "id": 8,
+        "title": "Ganpati Pooja",
+        "category": "REGULAR",
+        "price": "₹00.00",
+        "image": "pic/GANESH.jpg",
+        "description": "Description for Ganpati Pooja."
+    },
+    {
+        "id": 9,
+        "title": "Rudra Abhishek",
+        "category": "REGULAR",
+        "price": "₹00.00",
+        "image": "pic/RUDRA.jpeg",
+        "description": "Description for Rudra Abhishek."
+    },
+    {
+        "id": 10,
+        "title": "Mangalagaur Pooja",
+        "category": "REGULAR",
+        "price": "₹00.00",
+        "image": "pic/MANGALAKAUR.jpeg",
+        "description": "Description for Mangalagaur Pooja."
+    }
+]

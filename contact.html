@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/logoo.png" type="image/png">
+    <link rel="stylesheet" href="contact.css">
+    <title>Contact</title>
+</head>
+<body>
+    <!--NAV BAR -->
+    <header class="navbar">
+        <div class="container">
+            <a class="logo" href="index.html">
+                <img src="pic/logoo.png" alt="Logo">
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="service.html">Services</a>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            
+        </div>
+    </header>
+    
+    <section class="contact-section">
+        <h2 class="title">Contact Us</h2>
+        <div class="container">
+            <div class="map-container">
+                <div class="map-container">
+                    <div class="map-frame-wrapper">
+                        <!-- Iframe for map -->
+                        <iframe width="100%" height="100%" class="map-frame" frameborder="0" title="map" marginheight="0" marginwidth="0" scrolling="no" 
+                            src="pic/map.j">
+                        </iframe>
+                
+                        <!-- Overlay image with link -->
+                        <a href="pic/map.png" target="_blank" class="map-overlay-link">
+                            <img src="pic/map.png" alt="Map Placeholder" class="overlay-image">
+                        </a>
+                    </div>
+                </div>
+                                <div class="info-box">
+                    <div class="info-item">
+                        <h2 class="info-title">ADDRESS</h2>
+                        <p class="info-text">Vasantdada Patil Education Complex, Eastern Express Highway Near Everard Nagar, Chunabhatti, Sion, Mumbai, Maharashtra 400022</p>
+                    </div>
+                    <div class="info-item">
+                        <h2 class="info-title">EMAIL</h2>
+                        <a class="info-link" href="mailto:customer@eguruji.com">customer@eguruji.com</a>
+                        <h2 class="info-title">PHONE</h2>
+                        <a class="info-link" href="tel:+9191XXXXXX69">+91 91XXXXXX69</a> 
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="feedback-form">
+                <h2 class="feedback-title">Feedback</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" name="name" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea id="message" name="message" class="form-textarea"></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">SEND MESSAGE</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-sections">
+                <div class="footer-section">
+                    <h2>CUSTOMER SUPPORT</h2>
+                    <nav class="footer-links">
+                        <a href="mailto:customer@eguruji.com">customer@eguruji.com</a>
+                        <a href="tel:+9191XXXXXX69">+91 91XXXXXX69</a>
+                    </nav>
+                </div>
+                <div class="footer-section">
+                    <h2>INFO</h2>
+                    <nav class="footer-links">
+                        <a href="./cancelpolicy.html">Cancellation Policy</a>
+                        <a href="./terms.html">Terms & Conditions</a>
+                        <a href="./policy.html">Privacy Policy</a>
+                        <a href="#">Erase my data</a>
+                    </nav>
+                </div> 
+                <div class="footer-section">
+                    <h2>KEEP UP TO DATE</h2>
+                    <div class="newsletter">
+                        <label for="footer-field">Your Email Here</label>
+                        <input type="text" id="footer-field" name="footer-field">
+                        <button class="subscribe">SUBSCRIBE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 E-GURUJI</p>
+        </div>
+    </footer>
+    <script src="./contact.js"></script>
+</body>
+</html>

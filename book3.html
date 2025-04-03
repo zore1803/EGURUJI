@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - Step 3</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .search-container {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .scrollable-container {
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #fafafa;
+        }
+        
+        .pandit-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .pandit-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        
+        .pandit-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .pandit-info {
+            flex: 1;
+        }
+        
+        .pandit-info h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        
+        .pandit-info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .select-btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .select-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .no-pandits {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #bdc3c7;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #95a5a6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Step 3: Select a Pandit</h2>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by name or location..." oninput="filterPandits()">
+        </div>
+        
+        <div class="scrollable-container">
+            <div class="pandit-list" id="panditList"></div>
+        </div>
+    </div>
+
+    <script>
+        function loadPandits() {
+            const panditListDiv = document.getElementById("panditList");
+            panditListDiv.innerHTML = "";
+
+            let pandits = JSON.parse(localStorage.getItem("pandits")) || [];
+
+            if (pandits.length === 0) {
+                panditListDiv.innerHTML = "<p class='no-pandits'>No Pandits available.</p>";
+                return;
+            }
+
+            pandits.forEach((pandit, index) => {
+                const panditCard = document.createElement("div");
+                panditCard.classList.add("pandit-card");
+                panditCard.setAttribute("data-name", pandit.name.toLowerCase());
+                panditCard.setAttribute("data-address", pandit.address.toLowerCase());
+                panditCard.innerHTML = `
+                    <div class="pandit-info">
+                        <h3>Pandit ${pandit.name}</h3>
+                        <p><strong>Experience:</strong> ${pandit.experience} years</p>
+                        <p><strong>Email:</strong> ${pandit.email}</p>
+                        <p><strong>Address:</strong> ${pandit.address}</p>
+                    </div>
+                    <button class="select-btn" data-index="${index}">Select</button>
+                `;
+                panditListDiv.appendChild(panditCard);
+            });
+
+            document.querySelectorAll(".select-btn").forEach(button => {
+                button.addEventListener("click", function() {
+                    let index = this.getAttribute("data-index");
+                    selectPandit(index);
+                });
+            });
+        }
+
+        function filterPandits() {
+            const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+            const panditCards = document.querySelectorAll(".pandit-card");
+            
+            panditCards.forEach(card => {
+                const name = card.getAttribute("data-name");
+                const address = card.getAttribute("data-address");
+                
+                if (name.includes(searchTerm) || address.includes(searchTerm)) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        function selectPandit(index) {
+            let pandits = JSON.parse(localStorage.getItem("pandits")) || [];
+            let selectedPandit = pandits[index];
+
+            if (selectedPandit) {
+                // Store selected pandit in localStorage
+                localStorage.setItem("selectedPandit", JSON.stringify(selectedPandit));
+                
+                alert(`You have selected Pandit ${selectedPandit.name}`);
+                window.location.href = `book1.html?pandit=${encodeURIComponent(selectedPandit.name)}`;
+            } else {
+                alert("Error selecting Pandit. Please try again.");
+            }
+        }
+
+        window.onload = loadPandits;
+    </script>
+</body>
+</html>

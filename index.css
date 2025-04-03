@@ -1,0 +1,279 @@
+/* bg color */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: rgb(245, 234, 224);
+}
+/* nav design */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+/* Floating Book Now Button */
+.floating-book-now {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #ff6b00;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 18px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.floating-book-now:hover {
+    background-color: #e05d00;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.navbar {
+    background-color: #f8f9fa;
+    padding: 1rem 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo img {
+    height: 100px;
+    width: 100px;
+    cursor: pointer;
+}
+
+.nav-links a {
+    margin: 1rem;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    align-items: center;
+}
+
+.nav-links a:hover {
+    color: #000;
+}
+
+/* section */
+.first-section {
+    padding: 2rem 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.section-header h1 {
+    font-size: 2rem;
+    color: #333;
+}
+
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.feature {
+    width: 22%;
+    padding: 1rem;
+    border-left: 2px solid #ddd;
+    box-sizing: border-box;
+}
+
+.feature h2 {
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.procedure {
+    padding: 2rem 0;
+}
+
+.procedure-steps {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start; 
+    width: 100%; 
+    margin: 1rem 0;
+    flex-wrap: wrap; 
+}
+
+.step-icon img {
+    max-width: 100px;
+    height: auto; 
+    width: auto;
+}
+
+.step-icon {
+    margin-right: 1rem;
+}
+
+.step-content {
+    flex: 1; 
+    padding-left: 1rem;
+}
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+.step-content h2 {
+    font-size: 1rem;
+    color: #333;
+}
+
+.procedure-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.procedure-image {
+    width: 100%;
+    height: auto;
+    margin-top: 2rem;
+}
+
+/* footer */
+.footer {
+    background-color: #f8f9fa;
+    padding: 2rem 0;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Flexbox for Footer Sections */
+.footer-sections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1 1 200px; 
+}
+
+.footer-section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links a {
+    display: block;
+    color: #000000;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+    color: #ff0000;
+}
+
+/* Newsletter Styles */
+.newsletter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.newsletter input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1;
+}
+
+.subscribe {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.subscribe:hover {
+    background-color: #0056b3;
+}
+
+/* Footer Bottom Styles */
+.footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    flex-direction: column;  
+    padding: 1rem 0;
+    background-color: #e9ecef;
+    border-top: 1px solid #dee2e6;
+}
+
+.footer-logo img {
+    max-width: 100px; 
+}
+
+.footer-bottom p {
+    margin: 0.5rem 0 0; 
+    font-size: 0.875rem;
+}
+
+.footer-bottom a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.footer-bottom a:hover {
+    text-decoration: underline;
+}
+
+.button {
+    width: 115px;
+    height: 25px;
+    background-color: rgb(245, 234, 224);
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    line-height: 25px;
+}
+
+
+
+
+
+
+
+
+

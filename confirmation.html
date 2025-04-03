@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmation</title>
+    <link rel="icon" href="/logoo.png" type="image/png">
+    <link rel="stylesheet" href="confirmation.css">
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function () {
+            const paymentData = JSON.parse(sessionStorage.getItem("paymentData"));
+
+            if (paymentData) {
+                document.getElementById("panditName").textContent = paymentData.panditName || "Not Selected";
+                document.getElementById("paymentMethod").textContent = paymentData.paymentMethod;
+                document.getElementById("amount").textContent = "₹" + paymentData.amount;
+
+                // Show relevant payment details based on method
+                let paymentDetails = "";
+                if (paymentData.paymentMethod === "Credit/Debit Card") {
+                    paymentDetails = `Card Ending: **** ${paymentData.cardNumber.slice(-4)}`;
+                } else if (paymentData.paymentMethod === "UPI") {
+                    paymentDetails = `UPI ID: ${paymentData.upiId}`;
+                } else if (paymentData.paymentMethod === "Google Pay") {
+                    paymentDetails = `Google Pay Number: ${paymentData.gpayNumber}`;
+                } else if (paymentData.paymentMethod === "Wallet") {
+                    paymentDetails = `Wallet ID: ${paymentData.walletId}`;
+                }
+                document.getElementById("paymentDetails").textContent = paymentDetails;
+            } else {
+                document.getElementById("confirmationMessage").textContent = "No payment details found.";
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Payment Confirmation</h1>
+        </header>
+
+        <div class="confirmation-container">
+            <h2 id="confirmationMessage">Your Payment is Successful!</h2>
+            <p><strong>Pandit Name:</strong> <span id="panditName"></span></p>
+            <p><strong>Payment Method:</strong> <span id="paymentMethod"></span></p>
+            <p><strong>Amount Paid:</strong> <span id="amount"></span></p>
+            <p><strong>Payment Details:</strong> <span id="paymentDetails"></span></p>
+
+            <a href="index.html" class="home-btn">Go to Home</a>
+        </div>
+    </div>
+</body>
+</html>

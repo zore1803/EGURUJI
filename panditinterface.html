@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pandit Dashboard</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(245, 234, 224);
+            margin: 0;
+            line-height: 1.6;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .earnings-summary {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .earnings-card {
+            flex: 1;
+            background-color: #ff758c;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .puja-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .puja-list {
+            list-style-type: none;
+            padding: 0;
+            max-height: 300px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #ff758c #f1f1f1;
+        }
+        .puja-list::-webkit-scrollbar {
+            width: 10px;
+        }
+        .puja-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .puja-list::-webkit-scrollbar-thumb {
+            background: #ff758c;
+            border-radius: 5px;
+        }
+        .puja-list li {
+            background-color: #f8d7da;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+        .puja-list li.accepted {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+        }
+        .puja-list li.rejected {
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+        }
+        .puja-list li.completed {
+            background-color: #e2e3e5;
+            border-left: 5px solid #6c757d;
+        }
+        .booking-details {
+            flex: 1;
+            padding-right: 15px;
+        }
+        .booking-details h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        .booking-details p {
+            margin: 5px 0;
+        }
+        .puja-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .puja-actions button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .accept-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .accept-btn:hover {
+            background-color: #218838;
+        }
+        .reject-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .reject-btn:hover {
+            background-color: #c82333;
+        }
+        .complete-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        .complete-btn:hover {
+            background-color: #5a6268;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+        .puja-status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-accepted {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .status-completed {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+        .no-pujas {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .pandit-info-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .pandit-info-card h2 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .pandit-info-card p {
+            margin: 8px 0;
+        }
+        
+        .pandit-info-card strong {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Welcome, Pandit <span id="panditName"></span></h1>
+            <div class="header-actions">
+                <div>
+                    <strong>Last Login:</strong> <span id="lastLogin"></span>
+                </div>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+
+        <div id="panditInfoCard" class="pandit-info-card">
+            <!-- Pandit info will be inserted here dynamically -->
+        </div>
+
+        <div class="earnings-summary">
+            <div class="earnings-card">
+                <h3>Monthly Earnings</h3>
+                <p id="monthlyEarnings">₹0</p>
+            </div>
+            <div class="earnings-card">
+                <h3>Total Earnings</h3>
+                <p id="totalEarnings">₹0</p>
+            </div>
+        </div>
+
+        <div class="puja-section">
+            <h2>Upcoming Pujas</h2>
+            <ul class="puja-list" id="upcomingPujas">
+                <!-- Dynamic content will be inserted here -->
+            </ul>
+        </div>
+
+        <div class="puja-section">
+            <h2>Completed Pujas</h2>
+            <ul class="puja-list" id="completedPujas">
+                <!-- Dynamic content will be inserted here -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const loggedInPandit = JSON.parse(localStorage.getItem('loggedInPandit'));
+            if (!loggedInPandit) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const panditName = loggedInPandit.name || 'Pandit Ji';
+            
+            // Set pandit name and last login date
+            document.getElementById('panditName').textContent = panditName;
+            document.getElementById('lastLogin').textContent = new Date().toLocaleDateString();
+
+            // Display pandit info card
+            displayPanditInfo(loggedInPandit);
+
+            // Initialize earnings data if not exists
+            if (!localStorage.getItem('panditEarnings')) {
+                localStorage.setItem('panditEarnings', JSON.stringify({
+                    monthly: 0,
+                    total: 0,
+                    completedPujas: []
+                }));
+            }
+
+            // Load all data
+            loadDashboardData();
+
+            // Fixed logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('loggedInPandit');
+                window.location.href = 'index.html';
+            });
+
+            function displayPanditInfo(pandit) {
+                const panditInfoCard = document.getElementById('panditInfoCard');
+                panditInfoCard.innerHTML = `
+                    <h2>Your Information</h2>
+                    <p><strong>Name:</strong> ${pandit.name}</p>
+                    <p><strong>Email:</strong> ${pandit.email || 'Not provided'}</p>
+                    <p><strong>Experience:</strong> ${pandit.experience || '0'} years</p>
+                `;
+            }
+
+            function loadDashboardData() {
+                loadUpcomingPujas();
+                loadCompletedPujas();
+                loadEarnings();
+            }
+
+            function loadUpcomingPujas() {
+                const upcomingPujasList = document.getElementById('upcomingPujas');
+                upcomingPujasList.innerHTML = '';
+
+                const allBookings = JSON.parse(localStorage.getItem('allBookings')) || [];
+                const panditBookings = allBookings.filter(booking => 
+                    booking.assignedPandit === panditName && 
+                    booking.status !== 'completed'
+                );
+
+                if (panditBookings.length === 0) {
+                    upcomingPujasList.innerHTML = '<li class="no-pujas">No upcoming pujas found</li>';
+                    return;
+                }
+
+                panditBookings.forEach((booking, index) => {
+                    const pujaItem = document.createElement('li');
+                    const isAccepted = booking.status === 'accepted';
+                    const isRejected = booking.status === 'rejected';
+                    
+                    if (isAccepted) pujaItem.classList.add('accepted');
+                    if (isRejected) pujaItem.classList.add('rejected');
+
+                    const pujaDate = new Date(booking.date);
+                    const formattedDate = pujaDate.toLocaleDateString();
+
+                    pujaItem.innerHTML = `
+                        <div class="booking-details">
+                            <h3>${booking.puja}</h3>
+                            <p><strong>Customer:</strong> ${booking.name}</p>
+                            <p><strong>Mobile:</strong> ${booking.mobile}</p>
+                            <p><strong>Address:</strong> ${booking.address}</p>
+                            <p><strong>Date:</strong> ${formattedDate}</p>
+                            <p><strong>Time:</strong> ${booking.time}</p>
+                            <p><strong>Fee:</strong> ₹${booking.fee}</p>
+                            
+                            ${isAccepted ? '<span class="puja-status status-accepted">Accepted</span>' : ''}
+                            ${isRejected ? '<span class="puja-status status-rejected">Rejected</span>' : ''}
+                            ${!isAccepted && !isRejected ? '<span class="puja-status status-pending">Pending</span>' : ''}
+                        </div>
+                        <div class="puja-actions">
+                            ${!isAccepted && !isRejected ? `
+                                <button class="accept-btn" data-id="${index}">Accept</button>
+                                <button class="reject-btn" data-id="${index}">Reject</button>
+                            ` : ''}
+                            ${isAccepted ? `<button class="complete-btn" data-id="${index}">Complete</button>` : ''}
+                        </div>
+                    `;
+
+                    upcomingPujasList.appendChild(pujaItem);
+                });
+
+                // Add event listeners to action buttons
+                document.querySelectorAll('.accept-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        updateBookingStatus(this.getAttribute('data-id'), 'accepted');
+                    });
+                });
+
+                document.querySelectorAll('.reject-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        updateBookingStatus(this.getAttribute('data-id'), 'rejected');
+                    });
+                });
+
+                document.querySelectorAll('.complete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        completeBooking(this.getAttribute('data-id'));
+                    });
+                });
+            }
+
+            function loadCompletedPujas() {
+                const completedPujasList = document.getElementById('completedPujas');
+                completedPujasList.innerHTML = '';
+
+                const earningsData = JSON.parse(localStorage.getItem('panditEarnings'));
+                const completedPujas = earningsData.completedPujas.filter(
+                    puja => puja.panditName === panditName
+                );
+
+                if (completedPujas.length === 0) {
+                    completedPujasList.innerHTML = '<li class="no-pujas">No completed pujas found</li>';
+                    return;
+                }
+
+                completedPujas.forEach(puja => {
+                    const pujaItem = document.createElement('li');
+                    pujaItem.classList.add('completed');
+                    
+                    const pujaDate = new Date(puja.date);
+                    const formattedDate = pujaDate.toLocaleDateString();
+
+                    pujaItem.innerHTML = `
+                        <div class="booking-details">
+                            <h3>${puja.pujaType}</h3>
+                            <p><strong>Customer:</strong> ${puja.customerName}</p>
+                            <p><strong>Mobile:</strong> ${puja.customerPhone}</p>
+                            <p><strong>Address:</strong> ${puja.address}</p>
+                            <p><strong>Date:</strong> ${formattedDate}</p>
+                            <p><strong>Fee:</strong> ₹${puja.fee}</p>
+                            <span class="puja-status status-completed">Completed</span>
+                        </div>
+                    `;
+
+                    completedPujasList.appendChild(pujaItem);
+                });
+            }
+
+            function loadEarnings() {
+                const earningsData = JSON.parse(localStorage.getItem('panditEarnings'));
+                document.getElementById('monthlyEarnings').textContent = `₹${earningsData.monthly}`;
+                document.getElementById('totalEarnings').textContent = `₹${earningsData.total}`;
+            }
+
+            function updateBookingStatus(bookingIndex, status) {
+                const allBookings = JSON.parse(localStorage.getItem('allBookings')) || [];
+                allBookings[bookingIndex].status = status;
+                localStorage.setItem('allBookings', JSON.stringify(allBookings));
+                loadDashboardData();
+            }
+
+            function completeBooking(bookingIndex) {
+                const allBookings = JSON.parse(localStorage.getItem('allBookings')) || [];
+                const booking = allBookings[bookingIndex];
+                
+                // Add to completed pujas
+                const earningsData = JSON.parse(localStorage.getItem('panditEarnings')) || {
+                    monthly: 0,
+                    total: 0,
+                    completedPujas: []
+                };
+                
+                earningsData.completedPujas.push({
+                    pujaType: booking.puja,
+                    date: booking.date,
+                    time: booking.time,
+                    address: booking.address,
+                    fee: booking.fee,
+                    customerName: booking.name,
+                    customerPhone: booking.mobile,
+                    panditName: panditName
+                });
+                
+                // Update earnings
+                const fee = parseInt(booking.fee) || 0;
+                earningsData.monthly += fee;
+                earningsData.total += fee;
+                localStorage.setItem('panditEarnings', JSON.stringify(earningsData));
+                
+                // Remove from active bookings
+                allBookings.splice(bookingIndex, 1);
+                localStorage.setItem('allBookings', JSON.stringify(allBookings));
+                
+                loadDashboardData();
+            }
+        });
+    </script>
+</body>
+</html>

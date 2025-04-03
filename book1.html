@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - Step 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input, textarea, select {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        
+        button {
+            background-color: #000000;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #333;
+        }
+        
+        .form-group {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-group div {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Puja Booking Form</h2>
+        <form id="bookingForm1">
+            <input type="hidden" id="selectedPandit" name="selectedPandit">
+            
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="mobile">Mobile Number:</label>
+            <input type="tel" id="mobile" name="mobile" required>
+
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" required></textarea>
+
+            <label for="puja">Puja Name:</label>
+            <select id="puja" name="puja" required>
+                <option value="">Select a Puja</option>
+                <option value="Satyanarayan Puja">Vaastu Shanti</option>
+                <option value="Ganpati Puja">Griha Pravesh</option>
+                <option value="Laxmi Puja">Bhoomi Puja</option>
+                <option value="Durga Puja">Durga Puja</option>
+                <option value="Havan">Office Opening Puja</option>
+                <option value="Mahalakshmi Puja">Mahalakshmi Puja</option>
+                <option value="Ganpati Puja">Ganpati Puja</option>
+                <option value="Rudra Abhishek">Rudra Abhishek</option>
+                <option value="Mangalagaur Puja">Mangalagaur Puja</option>
+                <option value="Ganpati Visarjan Puja">Ganpati Visarjan Puja</option>
+                <option value="Janmashtami Puja">Janmashtami Puja</option>
+                <option value="Diwali Lakshmi Puja">Diwali Lakshmi Puja</option>
+                <option value="Ganapti Sthapana Puja">Ganapti Sthapana Puja</option>
+                <option value="Udak Shanti">Udak Shanti</option>
+                <option value="Navgraha Shanti">Navgraha Shanti</option>
+                <option value="Dhan Laxmi Puja">Dhan Laxmi Puja</option>
+                <option value="Ganesh Havan">Ganesh Havan</option>
+                <option value="Satyanarayan Havan">Satyanarayan Havan</option>
+                
+            </select>
+
+            <div class="form-group">
+                <div>
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div>
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+            </div>
+
+            <button type="submit">Submit Booking</button>
+        </form>
+    </div>
+
+    <script>
+        // Get the selected pandit from URL parameters and localStorage
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedPanditName = urlParams.get('pandit');
+        const selectedPandit = JSON.parse(localStorage.getItem('selectedPandit')) || { name: selectedPanditName };
+        
+        document.getElementById('selectedPandit').value = selectedPandit.name || '';
+
+        document.getElementById("bookingForm1").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const bookingDetails = {
+                name: document.getElementById("name").value,
+                mobile: document.getElementById("mobile").value,
+                address: document.getElementById("address").value,
+                puja: document.getElementById("puja").value,
+                date: document.getElementById("date").value,
+                time: document.getElementById("time").value,
+                assignedPandit: selectedPandit.name,
+                panditDetails: selectedPandit, // Store complete pandit details
+                status: "pending",
+                fee: "1000" // Default fee, can be dynamic based on puja type
+            };
+            
+            // Get existing bookings or initialize array
+            let allBookings = JSON.parse(localStorage.getItem('allBookings')) || [];
+            allBookings.push(bookingDetails);
+            
+            // Save to localStorage
+            localStorage.setItem('allBookings', JSON.stringify(allBookings));
+            
+            alert("Booking submitted successfully! Pandit will contact you soon.");
+            window.location.href = "service.html";
+        });
+    </script>
+</body>
+</html>

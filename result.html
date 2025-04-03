@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pandit Qualification Result</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        .result-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #d32f2f;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .icon {
+            font-size: 60px;
+            color: #d32f2f;
+            margin-bottom: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #666;
+        }
+        .contact {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .redirect-message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e3f2fd;
+            border-radius: 5px;
+            color: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <div class="result-container">
+        <div class="icon">⚠️</div>
+        <h1>Pandit Qualification Result Fail</h1>
+        <p>We appreciate your interest in joining our platform as a pandit. After carefully reviewing your knowledge assessment, we regret to inform you that you didn't meet our qualification criteria at this time.</p>
+        
+        <p>Our platform maintains high standards for vedic knowledge and ritual expertise to ensure the best service for our community. Your current score indicates there are areas where additional study would be beneficial.</p>
+        
+        <div class="contact">
+            <p>We encourage you to continue your studies in the following areas:</p>
+            <ul style="text-align: left; margin-left: 20px;">
+                <li>Vedic rituals and procedures</li>
+                <li>Puja vidhi and samagri knowledge</li>
+                <li>Muhurta determination</li>
+                <li>Scriptural understanding</li>
+            </ul>
+        </div>
+        
+        <p>You're welcome to reapply after further study and preparation. We wish you success in your spiritual journey.</p>
+        
+        <div class="redirect-message">
+            <p>You will be redirected to the homepage in <span id="countdown">5</span> seconds...</p>
+        </div>
+        
+        <div class="footer">
+            <p>With respect,<br>The E-Guruji Team</p>
+            <p><a href="mailto:support@eguruji.com">support@eguruji.com</a> | <a href="tel:+9191XXXXXX69">+91 91XXXXXX69</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Countdown and redirect functionality
+        let seconds = 5;
+        const countdownElement = document.getElementById('countdown');
+        
+        const countdownInterval = setInterval(() => {
+            seconds--;
+            countdownElement.textContent = seconds;
+            
+            if (seconds <= 0) {
+                clearInterval(countdownInterval);
+                window.location.href = 'index.html';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

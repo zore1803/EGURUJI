@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - Step 2</title>
+    <link rel="stylesheet" href="book.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Step 2: Select Date & Time For Puja</h2>
+        <form id="bookingForm2">
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="time">Select Time:</label>
+            <input type="time" id="time" name="time" required>
+
+            <button type="submit">Next</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("bookingForm2").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            let bookingDetails = JSON.parse(localStorage.getItem("currentBooking")) || {};
+            bookingDetails.date = document.getElementById("date").value;
+            bookingDetails.time = document.getElementById("time").value;
+            
+            localStorage.setItem("currentBooking", JSON.stringify(bookingDetails));
+            window.location.href = "service.html";
+        });
+    </script>
+</body>
+</html>

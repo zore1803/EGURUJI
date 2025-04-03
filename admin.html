@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        h1, h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+        }
+        
+        h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            font-size: 1.5rem;
+        }
+        
+        /* Header Styles */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        /* Button Styles */
+        .refresh-btn, .search-btn,
+        .mark-read-btn, .delete-feedback-btn {
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .refresh-btn, .search-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .refresh-btn:hover, .search-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Search Container */
+        .search-container {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        /* User List Styles */
+        .user-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .user-card {
+            background: #fff;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .user-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .user-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .user-card p {
+            margin: 8px 0;
+            color: #555;
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .user-type {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #2c3e50;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        /* Feedback Section Styles */
+        .feedback-section {
+            margin-top: 50px;
+            border-top: 2px solid #eee;
+            padding-top: 30px;
+        }
+        
+        .feedback-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .feedback-card {
+            background: #fff;
+            border: 1px solid #e1e1e1;
+            border-left: 4px solid #3498db;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-card.unread {
+            border-left-color: #e74c3c;
+            background-color: #fef9f9;
+        }
+        
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .feedback-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+        
+        .feedback-date {
+            font-size: 0.85rem;
+            color: #777;
+        }
+        
+        .feedback-email {
+            color: #3498db;
+            margin-bottom: 12px;
+            display: block;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        
+        .feedback-email:hover {
+            text-decoration: underline;
+        }
+        
+        .feedback-message {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .feedback-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .mark-read-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .mark-read-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .delete-feedback-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .delete-feedback-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Empty State Styles */
+        .no-users, .no-feedback {
+            text-align: center;
+            color: #777;
+            font-size: 1.1rem;
+            grid-column: 1 / -1;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .user-list, .feedback-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="admin-header">
+            <h1>Admin Dashboard</h1>
+            <button class="refresh-btn" id="refreshBtn">Refresh All Data</button>
+        </div>
+        
+        <h2>Registered Pandits</h2>
+        <div class="search-container">
+            <input type="text" id="searchPandit" class="search-input" placeholder="Search pandits by email...">
+            <button class="search-btn" id="searchPanditBtn">Search</button>
+        </div>
+        <div class="user-list" id="panditList"></div>
+
+        <h2>Registered Customers</h2>
+        <div class="search-container">
+            <input type="text" id="searchCustomer" class="search-input" placeholder="Search customers by email...">
+            <button class="search-btn" id="searchCustomerBtn">Search</button>
+        </div>
+        <div class="user-list" id="customerList"></div>
+        
+        <div class="feedback-section">
+            <h2>Customer Feedback</h2>
+            <div class="search-container">
+                <input type="text" id="searchFeedback" class="search-input" placeholder="Search feedback by name or email...">
+                <button class="search-btn" id="searchFeedbackBtn">Search</button>
+            </div>
+            <div class="feedback-list" id="feedbackList"></div>
+        </div>
+    </div>
+
+    <script>
+        // Store original data for filtering
+        let allPandits = [];
+        let allCustomers = [];
+        let allFeedback = [];
+
+        // Load all data from localStorage
+        function loadAllData() {
+            allPandits = JSON.parse(localStorage.getItem("pandits")) || [];
+            allCustomers = JSON.parse(localStorage.getItem("customers")) || [];
+            allFeedback = JSON.parse(localStorage.getItem("feedbacks")) || [];
+            
+            displayPandits(allPandits);
+            displayCustomers(allCustomers);
+            displayFeedback(allFeedback);
+        }
+
+        // Display pandits in the UI
+        function displayPandits(pandits) {
+            const panditListDiv = document.getElementById("panditList");
+            panditListDiv.innerHTML = "";
+
+            if (pandits.length === 0) {
+                panditListDiv.innerHTML = '<p class="no-users">No pandits found.</p>';
+                return;
+            }
+
+            pandits.forEach((pandit, index) => {
+                const panditCard = document.createElement("div");
+                panditCard.className = "user-card";
+                panditCard.innerHTML = `
+                    <span class="user-type">Pandit</span>
+                    <h3>${pandit.name}</h3>
+                    <p><strong>Experience:</strong> ${pandit.experience} years</p>
+                    <p><strong>Email:</strong> ${pandit.email}</p>
+                    <p><strong>Address:</strong> ${pandit.address || 'Not specified'}</p>
+                    <button class="delete-btn" data-type="pandit" data-index="${findOriginalIndex('pandit', pandit.email)}">Delete Pandit</button>
+                `;
+                panditListDiv.appendChild(panditCard);
+            });
+        }
+
+        // Display customers in the UI
+        function displayCustomers(customers) {
+            const customerListDiv = document.getElementById("customerList");
+            customerListDiv.innerHTML = "";
+
+            if (customers.length === 0) {
+                customerListDiv.innerHTML = '<p class="no-users">No customers found.</p>';
+                return;
+            }
+
+            customers.forEach((customer, index) => {
+                const customerCard = document.createElement("div");
+                customerCard.className = "user-card";
+                customerCard.innerHTML = `
+                    <span class="user-type">Customer</span>
+                    <h3>${customer.name}</h3>
+                    <p><strong>Email:</strong> ${customer.email}</p>
+                    <p><strong>Address:</strong> ${customer.address || 'Not specified'}</p>
+                    <p><strong>Phone:</strong> ${customer.phone || 'Not specified'}</p>
+                    <button class="delete-btn" data-type="customer" data-index="${findOriginalIndex('customer', customer.email)}">Delete Customer</button>
+                `;
+                customerListDiv.appendChild(customerCard);
+            });
+        }
+
+        // Display feedback in the UI
+        function displayFeedback(feedbacks) {
+            const feedbackListDiv = document.getElementById("feedbackList");
+            feedbackListDiv.innerHTML = "";
+
+            if (feedbacks.length === 0) {
+                feedbackListDiv.innerHTML = '<p class="no-feedback">No feedback submitted yet.</p>';
+                return;
+            }
+
+            feedbacks.forEach((feedback, index) => {
+                const feedbackCard = document.createElement("div");
+                feedbackCard.className = `feedback-card ${feedback.read ? '' : 'unread'}`;
+                feedbackCard.innerHTML = `
+                    <div class="feedback-header">
+                        <span class="feedback-name">${feedback.name}</span>
+                        <span class="feedback-date">${new Date(feedback.date).toLocaleString()}</span>
+                    </div>
+                    <a href="mailto:${feedback.email}" class="feedback-email">${feedback.email}</a>
+                    <div class="feedback-message">${feedback.message}</div>
+                    <div class="feedback-actions">
+                        <button class="mark-read-btn" data-index="${index}">
+                            ${feedback.read ? 'Mark Unread' : 'Mark Read'}
+                        </button>
+                        <button class="delete-feedback-btn" data-index="${index}">Delete</button>
+                    </div>
+                `;
+                feedbackListDiv.appendChild(feedbackCard);
+            });
+        }
+
+        // Find original index in allUsers array by email
+        function findOriginalIndex(type, email) {
+            const users = type === 'pandit' ? allPandits : allCustomers;
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].email === email) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        // Search pandits by email
+        function searchPandits() {
+            const searchTerm = document.getElementById("searchPandit").value.toLowerCase();
+            if (searchTerm === "") {
+                displayPandits(allPandits);
+                return;
+            }
+            
+            const filteredPandits = allPandits.filter(pandit => 
+                pandit.email.toLowerCase().includes(searchTerm)
+            );
+            displayPandits(filteredPandits);
+        }
+
+        // Search customers by email
+        function searchCustomers() {
+            const searchTerm = document.getElementById("searchCustomer").value.toLowerCase();
+            if (searchTerm === "") {
+                displayCustomers(allCustomers);
+                return;
+            }
+            
+            const filteredCustomers = allCustomers.filter(customer => 
+                customer.email.toLowerCase().includes(searchTerm)
+            );
+            displayCustomers(filteredCustomers);
+        }
+
+        // Search feedback by name or email
+        function searchFeedback() {
+            const searchTerm = document.getElementById("searchFeedback").value.toLowerCase();
+            if (searchTerm === "") {
+                displayFeedback(allFeedback);
+                return;
+            }
+            
+            const filteredFeedback = allFeedback.filter(feedback => 
+                feedback.name.toLowerCase().includes(searchTerm) || 
+                feedback.email.toLowerCase().includes(searchTerm)
+            );
+            displayFeedback(filteredFeedback);
+        }
+
+        // Delete a user from localStorage
+        function deleteUser(type, index) {
+            const userType = type === 'pandit' ? 'Pandit' : 'Customer';
+            
+            if (confirm(`Are you sure you want to delete this ${userType.toLowerCase()}? This action cannot be undone.`)) {
+                let users = JSON.parse(localStorage.getItem(type + "s")) || [];
+                
+                if (index >= 0 && index < users.length) {
+                    users.splice(index, 1);
+                    localStorage.setItem(type + "s", JSON.stringify(users));
+                    loadAllData();
+                    alert(`${userType} deleted successfully!`);
+                } else {
+                    alert(`Error: Invalid ${userType.toLowerCase()} index.`);
+                }
+            }
+        }
+
+        // Toggle feedback read status
+        function toggleFeedbackReadStatus(index) {
+            let feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
+            if (index >= 0 && index < feedbacks.length) {
+                feedbacks[index].read = !feedbacks[index].read;
+                localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+                displayFeedback(feedbacks);
+            }
+        }
+
+        // Delete feedback
+        function deleteFeedback(index) {
+            if (confirm("Are you sure you want to delete this feedback?")) {
+                let feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
+                if (index >= 0 && index < feedbacks.length) {
+                    feedbacks.splice(index, 1);
+                    localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+                    displayFeedback(feedbacks);
+                }
+            }
+        }
+
+        // Event listeners
+        document.getElementById("searchPanditBtn").addEventListener("click", searchPandits);
+        document.getElementById("searchCustomerBtn").addEventListener("click", searchCustomers);
+        document.getElementById("searchFeedbackBtn").addEventListener("click", searchFeedback);
+        document.getElementById("refreshBtn").addEventListener("click", loadAllData);
+
+        // Allow search on Enter key
+        document.getElementById("searchPandit").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") searchPandits();
+        });
+        document.getElementById("searchCustomer").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") searchCustomers();
+        });
+        document.getElementById("searchFeedback").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") searchFeedback();
+        });
+
+        // Event delegation for buttons
+        document.addEventListener('click', function(e) {
+            // User deletion
+            if (e.target.classList.contains("delete-btn")) {
+                const type = e.target.getAttribute('data-type');
+                const index = e.target.getAttribute('data-index');
+                deleteUser(type, index);
+            }
+            
+            // Feedback actions
+            if (e.target.classList.contains("mark-read-btn")) {
+                const index = e.target.getAttribute('data-index');
+                toggleFeedbackReadStatus(index);
+            }
+            
+            if (e.target.classList.contains("delete-feedback-btn")) {
+                const index = e.target.getAttribute('data-index');
+                deleteFeedback(index);
+            }
+        });
+
+        // Load all data when page loads
+        window.addEventListener("DOMContentLoaded", loadAllData);
+    </script>
+</body>
+</html>

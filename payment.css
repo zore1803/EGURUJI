@@ -1,0 +1,118 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(245, 234, 224);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px; /* Increase max width for QR code */
+    margin: 50px auto; /* Center the container */
+    padding: 20px;
+    background-color: #fff; /* White background for the form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Header Styles */
+header {
+    text-align: center; /* Center the header */
+}
+
+header h1 {
+    color: #007bff; /* Primary color */
+    margin-bottom: 20px; /* Space below header */
+}
+
+/* Payment Container Styles */
+.payment-container {
+    margin-top: 20px; /* Space above the payment container */
+}
+
+/* Flexbox for Payment Method and QR Code */
+.payment-method-container {
+    display: flex;
+    justify-content: space-between; /* Space between the form and QR code */
+    align-items: flex-start; /* Align items at the top */
+}
+
+/* Form Styles */
+form {
+    flex: 1; /* Allow the form to take available space */
+    margin-right: 20px; /* Space between form and QR code */
+}
+
+/* QR Code Container */
+.qr-code-container {
+    flex: 0 0 200px; /* Fixed width for QR code container */
+    text-align: center; /* Center the QR code */
+    padding: 20px;
+    border: 1px solid #ccc; /* Light border around QR code section */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background */
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Column direction */
+    justify-content: flex-end; /* Align items at the bottom */
+}
+
+/* QR Code Styles */
+.qr-code-container img {
+    width: 100%; /* Full width of the container */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Group Styles */
+.form-group {
+    margin-bottom: 15px; /* Space between groups */
+}
+
+/* Label Styles */
+label {
+    margin-bottom: 5px; /* Space below labels */
+    font-weight: bold; /* Bold labels */
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="number"],
+select {
+    padding: 10px; /* Padding for input fields */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 4px; /* Rounded edges */
+    font-size: 1rem; /* Font size for input */
+    width: 100%; /* Full width */
+}
+
+/* Select Styles */
+select {
+    cursor: pointer; /* Pointer cursor on select */
+}
+
+/* Button Styles */
+.submit-btn {
+    padding: 10px; /* Button padding */
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 1rem; /* Font size for button */
+    cursor: pointer; /* Pointer cursor on button */
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.submit-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Hidden Class for Payment Details */
+.hidden {
+    display: none; /* Hide elements with this class */
+}
+
+/* Payment Details Heading */
+.payment-details h3 {
+    margin-top: 20px; /* Space above payment details heading */
+    color: #444; /* Darker color for subheadings */
+    font-size: 1.25rem; /* Font size for details heading */
+}
